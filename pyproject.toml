@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "sandbox"
+version = "0.1.0"
+description = ""
+authors = ["Alistair Israel <aisrael@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [
+    {"include" = "sandbox"}
+]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastapi = "^0.115.11"
+uvicorn = "^0.34.0"
+
+[tool.poetry.scripts]
+start = "sandbox.app:start"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
