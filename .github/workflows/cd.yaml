@@ -1,0 +1,19 @@
+name: GitOps Push
+
+on:
+  push:
+
+permissions:
+  contents: read
+
+jobs:
+  gitops-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: gitops-push
+        uses: aisrael/gitops-push@main
+        with:
+          service: "sandbox"
+          version: ${{ github.sha }}
