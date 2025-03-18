@@ -17,3 +17,4 @@ jobs:
         with:
           service: "sandbox"
           version: ${{ github.sha }}
+          gitops-repo: "aisrael/gitops"
