@@ -15,10 +15,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Determine latest tag
+        id: latest-tag
+        run: |
+          latest_tag=$(git describe ${{ github.sha }})
+          echo "latest_tag=$latest_tag" >> $GITHUB_OUTPUT
       - name: gitops-push-dev
         uses: aisrael/gitops-push@main
         with:
           deployment: sandbox
           environment: production
-          ref: ${{ github.sha }}
+          ref: ${{ steps.latest-tag.outputs.latest_tag }}
           gitops-repo-token: ${{ secrets.GITOPS_PUSH_TOKEN }}
