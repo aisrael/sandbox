@@ -2,8 +2,8 @@ name: GitOps Push
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - v*
   workflow_dispatch:
     inputs:
       environment:
@@ -32,7 +32,7 @@ jobs:
         with:
           deployment: sandbox
           environment: dev
-          ref: ${{ github.sha }}
+          ref: ${{ github.ref_name }}
           gitops-repo-token: ${{ secrets.GITOPS_PUSH_TOKEN }}
   gitops-push-stage:
     if: ${{ github.event_name == 'push' }}
@@ -46,7 +46,7 @@ jobs:
         with:
           deployment: sandbox
           environment: stage
-          ref: ${{ github.sha }}
+          ref: ${{ github.ref_name }}
           gitops-repo-token: ${{ secrets.GITOPS_PUSH_TOKEN }}
 
   gitops-push-workflow-dispatch:
