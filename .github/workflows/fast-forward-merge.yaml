@@ -1,0 +1,59 @@
+name: Fast-Forward Merge
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  fast_forward_job:
+    name: Fast Forward PR Merge
+
+    # Will fast-forward merge if the ONLY text is '/merge' to prevent accidental merges.
+    if: github.event.issue.pull_request != '' && github.event.comment.body == '/merge'
+
+    runs-on: ubuntu-latest
+
+    outputs:
+      pre_sha: ${{ steps.get_sha_pre.outputs.pre_sha }}
+      target_sha: ${{ steps.get_sha.outputs.target_sha }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Pre hash
+        id: get_sha_pre
+        run: |
+          git rev-parse HEAD
+          echo pre_sha=$(git rev-parse HEAD) >> $GITHUB_OUTPUT
+
+      - name: Fast Forward PR
+        id: ff-action
+        uses: endre-spotlab/fast-forward-js-action@2.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITOPS_PUSH_TOKEN }}
+          success_message: 'Success!'
+          failure_message: 'Failed! Cannot do fast forward!'
+          update_status: true
+          production_branch: 'production'
+          staging_branch: 'main'
+
+      - name: Get hash
+        id: get_sha
+        run: |
+          git pull --ff-only
+          git rev-parse HEAD
+          echo target_sha=$(git rev-parse HEAD) >> $GITHUB_OUTPUT
+
+      - name: Review
+        run: |
+          echo pre ${{ steps.get_sha_pre.outputs.pre_sha }}
+          echo post ${{ steps.get_sha.outputs.target_sha }}
+
+      - name: Merge success check
+        if: steps.get_sha_pre.outputs.pre_sha != steps.get_sha.outputs.target_sha
+        uses: actions/github-script@v7
+        with:
+          script: |
+            core.setFailed('looks like merge failed')

@@ -16,6 +16,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          ref: production
           fetch-depth: 0 # Need all tags
       - name: Determine latest tag
         id: latest-tag
