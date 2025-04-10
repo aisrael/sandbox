@@ -20,14 +20,31 @@ permissions:
   contents: read
 
 jobs:
-  gitops-push:
+  gitops-push-dev:
+    if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest
+    environment: dev
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: gitops-push
+      - name: gitops-push-dev
         uses: aisrael/gitops-push@main
         with:
-          deployment: "sandbox"
+          deployment: sandbox
+          environment: dev
           ref: ${{ github.sha }}
+          gitops-repo-token: ${{ secrets.GITOPS_PUSH_TOKEN }}
+  gitops-push-workflow-dispatch:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: gitops-push-dev
+        uses: aisrael/gitops-push@main
+        with:
+          deployment: sandbox
+          environment: ${{ github.event.inputs.environment }}
+          ref: ${{ github.event.inputs.ref }}
           gitops-repo-token: ${{ secrets.GITOPS_PUSH_TOKEN }}
