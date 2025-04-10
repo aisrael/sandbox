@@ -30,4 +30,4 @@ jobs:
         with:
           deployment: "sandbox"
           ref: ${{ github.sha }}
-          token: ${{ secrets.GITOPS_PUSH_TOKEN }}
+          gitops-repo-token: ${{ secrets.GITOPS_PUSH_TOKEN }}
