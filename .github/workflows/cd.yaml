@@ -2,6 +2,19 @@ name: GitOps Push
 
 on:
   push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment to deploy to"
+        required: true
+        type: environment
+      ref:
+        description: "Tag or GitHub SHA to deploy. Defaults to the branch that triggered the workflow"
+        required: false
+        type: string
+        default: ''
 
 permissions:
   contents: read
@@ -17,3 +30,4 @@ jobs:
         with:
           deployment: "sandbox"
           ref: ${{ github.sha }}
+          token: ${{ secrets.GITOPS_PUSH_TOKEN }}
