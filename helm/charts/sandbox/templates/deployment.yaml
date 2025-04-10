@@ -50,6 +50,9 @@ spec:
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+          env:
+            - name: ENV
+              value: "{{ .Values.env }}"
       {{- with .Values.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}
