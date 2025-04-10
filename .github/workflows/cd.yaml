@@ -36,6 +36,7 @@ jobs:
           gitops-repo-token: ${{ secrets.GITOPS_PUSH_TOKEN }}
   gitops-push-stage:
     if: ${{ github.event_name == 'push' }}
+    needs: gitops-push-dev
     runs-on: ubuntu-latest
     environment: stage
     steps:
