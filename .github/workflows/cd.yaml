@@ -15,6 +15,5 @@ jobs:
       - name: gitops-push
         uses: aisrael/gitops-push@main
         with:
-          service: "sandbox"
-          version: ${{ github.sha }}
-          gitops-repo: "aisrael/gitops"
+          deployment: "sandbox"
+          ref: ${{ github.sha }}
