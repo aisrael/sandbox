@@ -7,8 +7,8 @@ jobs:
   fast_forward_job:
     name: Fast Forward PR Merge
 
-    # Will fast-forward merge if the PR target is production and the comment text is '/merge'
-    if: github.event.issue.pull_request.ref == 'production' && github.event.comment.body == '/merge'
+    # Will fast-forward merge if it's a PRkindkinda the comment text is '/merge'
+    if: github.event.issue.pull_request != '' && github.event.comment.body == '/merge'
 
     runs-on: ubuntu-latest
 
