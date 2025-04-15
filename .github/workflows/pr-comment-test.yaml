@@ -13,5 +13,5 @@ jobs:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
         run: |
           echo ::group::Github context
-          echo $GITHUB_CONTEXT
+          echo $GITHUB_CONTEXT | jq
           echo ::endgroup::
