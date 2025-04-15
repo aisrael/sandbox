@@ -1,4 +1,4 @@
-name: Fast-Forward Merge
+name: PR Comment
 on:
   issue_comment:
     types: [created]
