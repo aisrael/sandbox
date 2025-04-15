@@ -1,0 +1,15 @@
+name: Fast-Forward Merge
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  pr-comment:
+    name: PR Comment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Github context
+        run: |
+          echo ::group::Github context
+          echo ${{ toJSON(github) }}
+          echo ::endgroup::
