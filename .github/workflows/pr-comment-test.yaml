@@ -18,5 +18,5 @@ jobs:
           echo ::endgroup::
           # Try to grab the PR
           echo ::group::${PULL_REQUEST_URL}
-          curl -s -H "Authorization: Bearer $GITHUB_TOKEN" -H "Accept: application/vnd.github.v3+json" $PULL_REQUEST_URL
+          curl -s -H "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" $PULL_REQUEST_URL
           echo ::endgroup::
