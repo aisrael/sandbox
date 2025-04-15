@@ -11,7 +11,12 @@ jobs:
       - name: Github context
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
+          PULL_REQUEST_URL: ${{ github.event.issue.pull_request.url }}
         run: |
           echo ::group::Github context
           echo $GITHUB_CONTEXT | jq
+          echo ::endgroup::
+          # Try to grab the PR
+          echo ::group::${PULL_REQUEST_URL}
+          curl -s -H "Authorization: Bearer $GITHUB_TOKEN" -H "Accept: application/vnd.github.v3+json" $PULL_REQUEST_URL
           echo ::endgroup::
