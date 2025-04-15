@@ -9,7 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Github context
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
         run: |
           echo ::group::Github context
-          echo ${{ toJSON(github) }}
+          echo $GITHUB_CONTEXT
           echo ::endgroup::
