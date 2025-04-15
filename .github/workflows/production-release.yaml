@@ -24,6 +24,13 @@ jobs:
           latest_tag=$(git describe ${{ github.sha }})
           echo "::notice::Latest tag: $latest_tag"
           echo "latest_tag=$latest_tag" >> $GITHUB_OUTPUT
+      - name: Debugging
+        env:
+          GITHUB_CONTEXT: ${{ toJSON(github) }}
+        run: |
+          echo ::group::Github context
+          echo $GITHUB_CONTEXT | jq
+          echo ::endgroup::
       - name: gitops-push-production
         uses: aisrael/gitops-push@main
         with:
