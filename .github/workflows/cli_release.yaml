@@ -27,7 +27,7 @@ jobs:
             github.rest.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: 'refs/tags/cli-${{ steps.version.outputs.version }}'
+              ref: 'refs/tags/cli-${{ steps.version.outputs.version }}',
               sha: context.sha
             })
   go-matrix-build:
