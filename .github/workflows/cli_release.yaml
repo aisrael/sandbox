@@ -7,11 +7,14 @@ on:
     paths:
       - cli/main.go
 
+permissions:
+  contents: write      
+
 jobs:
   extract-version:
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.version.outputs.version }}
+      version: ${{ steps.version.outputs.version }}    
     steps:
       - uses: actions/checkout@v4
       - id: version
