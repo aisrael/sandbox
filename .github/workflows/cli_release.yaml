@@ -71,5 +71,4 @@ jobs:
         with:
           name: cli-${{ needs.extract-version.outputs.version }}
           tag_name: cli-${{ needs.extract-version.outputs.version }}
-          files:
-            - cli-*
+          files: cli-*
