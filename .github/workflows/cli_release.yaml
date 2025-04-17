@@ -56,7 +56,9 @@ jobs:
           path: cli/cli-${{ matrix.os }}-${{ matrix.arch }}
 
   create-release:
-    needs: go-matrix-build
+    needs: 
+      - extract-version
+      - go-matrix-build
     runs-on: ubuntu-latest
     steps:
       - name: Download all artifacts
@@ -64,6 +66,12 @@ jobs:
         with:
           merge-multiple: true
       - name: Show artifacts
-        run: |
-          ls -R
+        run: |          
           ls -la
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: cli-${{ needs.extract-version.outputs.version }}
+          tag_name: cli-${{ needs.extract-version.outputs.version }}
+          files:
+            - cli-*
