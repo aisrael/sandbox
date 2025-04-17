@@ -1,0 +1,65 @@
+name: Build and release CLI
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - cli/main.go
+
+jobs:
+  extract-version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: version
+        run: |
+          VERSION=$(perl -n -e '/^const Version = "(.+)"$/ && print $1' < cli/main.go)
+          echo "VERSION: ${VERSION}"
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+      # TODO: Validate version
+
+  go-matrix-build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os:
+          - darwin
+        arch:
+          - arm64
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: cli/go.mod
+          cache-dependency-path: cli/go.sum
+      - name: go build
+        env:
+          GOARCH: ${{ matrix.arch }}
+          GOOS: ${{ matrix.os }}
+        run: |
+          cd cli
+          echo "\$GOARCH: ${GOARCH}"
+          echo "\$GOOS: ${GOOS}"
+          go build -o cli-${GOOS}-${GOARCH}
+          ls -la cli-${GOOS}-${GOARCH}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cli-${{ matrix.os }}-${{ matrix.arch }}
+          path: cli/cli-${{ matrix.os }}-${{ matrix.arch }}
+
+  create-release:
+    needs: go-matrix-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+      - name: Show artifacts
+        run: |
+          ls -R
+          ls -la
