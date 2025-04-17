@@ -27,7 +27,9 @@ jobs:
       matrix:
         os:
           - darwin
+          - linux
         arch:
+          - amd64
           - arm64
     steps:
       - name: Checkout
@@ -59,6 +61,8 @@ jobs:
     steps:
       - name: Download all artifacts
         uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
       - name: Show artifacts
         run: |
           ls -R
