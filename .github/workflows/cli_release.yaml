@@ -56,9 +56,7 @@ jobs:
           path: cli/cli-${{ matrix.os }}-${{ matrix.arch }}
 
   create-release:
-    needs: 
-      - extract-version
-      - go-matrix-build
+    needs: [extract-version, go-matrix-build]
     runs-on: ubuntu-latest
     steps:
       - name: Download all artifacts
