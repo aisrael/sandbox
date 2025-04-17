@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-const Version = "v0.0.5"
+const Version = "v0.0.6"
 
 // main entrypoint. Run the CLI with os arguments and default dependency injections
 func main() {
