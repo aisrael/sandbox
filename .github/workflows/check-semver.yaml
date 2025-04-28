@@ -1,0 +1,19 @@
+name: Test SemVer Check
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to check"
+        required: true
+        type: string
+
+jobs:
+  semver-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check version using aisrael/check-semver
+        uses: aisrael/check-semver@first-try
+        with:
+          version: ${{ github.event.inputs.version }}
+          token: ${{ secrets.GITOPS_PUSH_TOKEN }}
