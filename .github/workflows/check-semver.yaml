@@ -24,5 +24,9 @@ jobs:
           prefix: ${{ github.event.inputs.prefix }}
           token: ${{ secrets.GITOPS_PUSH_TOKEN }}
       - name: Echo the output
+        env:
+          VALID: ${{ steps.check-semver.outputs.valid }}
+          MESSAGE: ${{ steps.check-semver.outputs.message }}
         run: |
-          echo "valid? ${{ steps.check-semver.outputs.valid }}"
+          echo "valid? ${VALID}"
+          echo "message: \"${MESSAGE}\""
