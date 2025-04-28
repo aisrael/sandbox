@@ -7,6 +7,10 @@ on:
         description: "Version to check"
         required: true
         type: string
+      prefix:
+        description: "Prefix to check"
+        required: false
+        type: string
 
 jobs:
   semver-check:
@@ -17,6 +21,7 @@ jobs:
         uses: aisrael/check-semver@first-try
         with:
           version: ${{ github.event.inputs.version }}
+          prefix: ${{ github.event.inputs.prefix }}
           token: ${{ secrets.GITOPS_PUSH_TOKEN }}
       - name: Echo the output
         run: |
