@@ -13,7 +13,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check version using aisrael/check-semver
+        id: check-semver
         uses: aisrael/check-semver@first-try
         with:
           version: ${{ github.event.inputs.version }}
           token: ${{ secrets.GITOPS_PUSH_TOKEN }}
+      - name: Echo the output
+        run: |
+          echo "valid? ${{ steps.check-semver.outputs.valid }}"
